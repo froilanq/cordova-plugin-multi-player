@@ -6,7 +6,7 @@ var MultiPlayer = (function () {
     }
 
     MultiPlayerConstruct.prototype.initialize = function (successCallback, failureCallback, url, autoKillNotification, stallTimeout) {
-        cordova.exec(successCallback, failureCallback, 'MultiPlayer', 'initialize', [ url, autoKillNotification || false, stallTimeout || false ]);
+        cordova.exec(successCallback, failureCallback, 'MultiPlayer', 'initialize', [url, autoKillNotification || false, stallTimeout || false]);
     };
 
     MultiPlayerConstruct.prototype.connect = function (successCallback, failureCallback) {
@@ -22,11 +22,15 @@ var MultiPlayer = (function () {
             streamType = -1;
         }
 
-        cordova.exec(successCallback, failureCallback, 'MultiPlayer', 'play', [ streamType ]);
+        cordova.exec(successCallback, failureCallback, 'MultiPlayer', 'play', [streamType]);
     };
 
-    MultiPlayerConstruct.prototype.stop = function(successCallback, failureCallback) {
+    MultiPlayerConstruct.prototype.stop = function (successCallback, failureCallback) {
         cordova.exec(successCallback, failureCallback, 'MultiPlayer', 'stop', []);
+    };
+
+    MultiPlayerConstruct.prototype.update = function (successCallback, failureCallback, url) {
+        cordova.exec(successCallback, failureCallback, 'MultiPlayer', 'update', [url]);
     };
 
     return new MultiPlayerConstruct();

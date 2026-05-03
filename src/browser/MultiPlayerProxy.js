@@ -216,12 +216,31 @@ var MultiPlayerProxy = (function () {
         successCallback && successCallback();
     };
 
+    function update(successCallback, failureCallback, params) {
+        if (!sendErrorNotInitialized(failureCallback)) {
+            return;
+        }
+
+        streamUrl = params[0];
+
+        if (isPlaying || requestedInitPlaying) {
+            stop(function () {
+                isPlaying = false;
+                requestedInitPlaying = false;
+                play(successCallback, failureCallback);
+            }, failureCallback);
+        } else {
+            successCallback && successCallback();
+        }
+    };
+
     return {
         initialize: initialize,
         connect: connect,
         disconnect: disconnect,
         play: play,
         stop: stop,
+        update: update,
     };
 })();
 

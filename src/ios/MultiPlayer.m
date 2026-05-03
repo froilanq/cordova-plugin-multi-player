@@ -17,6 +17,7 @@
 - (void)disconnect:(CDVInvokedUrlCommand*)command;
 - (void)play:(CDVInvokedUrlCommand*)command;
 - (void)stop:(CDVInvokedUrlCommand*)command;
+- (void)update:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation MultiPlayer
@@ -156,6 +157,20 @@
 
     if (stopping) {
         [self mp_sendListenerResult:@"STOPPED"];
+    }
+}
+
+- (void)update:(CDVInvokedUrlCommand*)command
+{
+    NSLog(@"Update \n");
+    self.streamUrl = [command argumentAtIndex:0];
+
+    if (self.streamPlayer != nil) {
+        [self mp_unloadPlayer];
+        [self play:command];
+    } else {
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
 }
 

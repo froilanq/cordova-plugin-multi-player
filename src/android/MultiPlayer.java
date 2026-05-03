@@ -152,6 +152,29 @@ public class MultiPlayer extends CordovaPlugin implements RadioListener {
             });
 
             return true;
+        } else if ("update".equals(action)) {
+            RadioManager.getRequestHandler().post(new Runnable() {
+                public void run() {
+                    synchronized (MultiPlayer.this) {
+                        try {
+                            mRadioManager.setStreamURL(args.getString(0));
+
+                            if (mRadioManager.isPlaying()) {
+                                requestedPlay = null;
+                                mRadioManager.stopRadio();
+                                mRadioManager.startRadio();
+                            }
+
+                            callbackContext.success();
+                        } catch (Exception e) {
+                            log("Exception occurred during update: ".concat(e.getMessage()));
+                            callbackContext.error(e.getMessage());
+                        }
+                    }
+                }
+            });
+
+            return true;
         } else {
             log("Called invalid action: " + action);
             return false;
